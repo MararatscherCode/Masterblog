@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Post - My Flask Blog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Add a New Post</h1>
+    <form method="post" action="{{ url_for('add') }}">
+        <label for="author">Author</label><br>
+        <input type="text" id="author" name="author" placeholder="Your name"><br><br>
+
+        <label for="title">Title</label><br>
+        <input type="text" id="title" name="title" placeholder="Post title" required><br><br>
+
+        <label for="content">Content</label><br>
+        <textarea id="content" name="content" rows="8" cols="60" placeholder="Write your post here..." required></textarea><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <p><a href="{{ url_for('index') }}">Back to home</a></p>
+</body>
+</html>
