@@ -67,5 +67,35 @@ def delete(post_id):
     return redirect(url_for('index'))
 
 
+@app.route('/update/<int:post_id>', methods=['GET', 'POST'])
+def update(post_id):
+    """Show update form on GET; update post on POST and redirect to index."""
+    posts = load_posts()
+    # find post by id
+    post = next((p for p in posts if int(p.get('id', -1)) == int(post_id)), None)
+    if post is None:
+        return "Post not found", 404
+
+    if request.method == 'POST':
+        # get updated fields from the form
+        author = request.form.get('author', '').strip() or post.get('author', 'Anonymous')
+        title = request.form.get('title', '').strip() or post.get('title', 'Untitled')
+        content = request.form.get('content', '').strip() or post.get('content', '')
+
+        # update the post in-place
+        for p in posts:
+            if int(p.get('id', -1)) == int(post_id):
+                p['author'] = author
+                p['title'] = title
+                p['content'] = content
+                break
+
+        save_posts(posts)
+        return redirect(url_for('index'))
+
+    # GET -> render form pre-filled with current post data
+    return render_template('update.html', post=post)
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
